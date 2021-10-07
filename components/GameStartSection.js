@@ -1,13 +1,36 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
 
 const GameStartSection = (props) =>{
     const [enterNumber, setEnterNumber] = useState('')
+    const [confirmed, setConfirmed] = useState(false)
+    const [selctedNumber, setSelectedNumber] = useState()
 
     const numberInputHandler = e =>{
         console.log(e)
         setEnterNumber(e.replace(/[^0-9]/g, ''))
+    }
+
+    const resetInputHandler = () =>{
+        setConfirmed(false)
+        setEnterNumber('')
+    }
+
+    const submitIputHandler = () =>{
+        const chosenNumber = parseInt(enterNumber)
+        if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99){
+            Alert.alert("Invalid Number", "Number has to be a Number between 1 to 99.",[{text:'Okay', style:"destructive", onPress:resetInputHandler}] )
+            return;
+        }
+        setConfirmed(true)
+        setSelectedNumber(chosenNumber)
+        setEnterNumber('')
+    }
+
+    let showOutput
+    if(confirmed){
+        showOutput = <Text>Selected number is: {selctedNumber} </Text>
     }
 
     return(
@@ -19,13 +42,14 @@ const GameStartSection = (props) =>{
                     <TextInput style={styles.cardInput} onChangeText={numberInputHandler} value={enterNumber} blurOnSubmit autoCapitalize="none" autoCorrect={false} keyboardType="number-pad" maxLength={2} />
                     <View style={styles.cardBtn}>
                         <View style={styles.btnSize}>
-                            <Button color="#27ae60" title="Reset" />
+                            <Button color="#27ae60" title="Reset" onPress={resetInputHandler} />
                         </View>
                         <View style={styles.btnSize}>
-                            <Button color="#B33771" title="Submit" />
+                            <Button color="#B33771" title="Submit" onPress={submitIputHandler} />
                         </View>
                     </View>
                 </View>
+                {showOutput}
             </View>
         </TouchableWithoutFeedback>
 
