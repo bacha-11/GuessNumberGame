@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
+import NumberContainer from "./NumberContainer";
 
 
 const GameStartSection = (props) =>{
@@ -30,7 +31,13 @@ const GameStartSection = (props) =>{
 
     let showOutput
     if(confirmed){
-        showOutput = <Text>Selected number is: {selctedNumber} </Text>
+        showOutput =( 
+        <View style={[styles.CardContainer, styles.summaryConatiner]}>
+            <Text style={styles.cardTitle}>You Selected </Text>
+            <NumberContainer>{selctedNumber}</NumberContainer>
+            <Button title="START GAME" color="#27ae60" />
+        </View>
+        )
     }
 
     return(
@@ -105,5 +112,11 @@ const styles = StyleSheet.create({
 
     btnSize:{
         width:"40%"
+    },
+
+    summaryConatiner:{
+        width:"50%",
+        marginVertical:20,
+        alignItems:"center",
     }
 })
